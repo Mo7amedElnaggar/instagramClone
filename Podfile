@@ -10,6 +10,8 @@ pod 'Firebase/Auth’
 pod 'Firebase/Database’
 pod 'Firebase/Storage’
 pod 'SDWebImage/WebP'
+pod 'PermissionScope'
+
 
   # Pods for FireBase instagram Clone
 
