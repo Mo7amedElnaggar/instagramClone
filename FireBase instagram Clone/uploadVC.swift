@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import PermissionScope
 
 class uploadVC: UIViewController , UIImagePickerControllerDelegate , UINavigationControllerDelegate {
 
@@ -18,16 +19,22 @@ class uploadVC: UIViewController , UIImagePickerControllerDelegate , UINavigatio
     @IBOutlet weak var postText: UITextView!
     @IBOutlet weak var chooseLabel: UILabel!
     
+    // Photo Libary PErmission
+    let photoLibary = PermissionScope()
+    
     var uuid = NSUUID().uuidString // create unique id every Time to photo name
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        /* Adding Permission scopre FrameWork */
+        photoLibary.addPermission(PhotosPermission(), message: "Access to Select Photo")
+        
         // Do any additional setup after loading the view, typically from a nib.
         
         makeImageViewLikeCircle()
         
         postImage.isUserInteractionEnabled = true
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(uploadVC.selectImage))
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(uploadVC.showPermission))
         
         postImage.addGestureRecognizer(gestureRecognizer)
     }
@@ -82,8 +89,17 @@ class uploadVC: UIViewController , UIImagePickerControllerDelegate , UINavigatio
         postText.layer.shadowRadius = 5.0
         
     }
+    func showPermission() {
+        
+        photoLibary.show({ (finished, results) in
+            self.selectImage()
+        }) { (results) in
+            
+        }
+    }
     
     func selectImage() {
+ 
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = .photoLibrary
