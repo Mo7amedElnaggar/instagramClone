@@ -49,6 +49,8 @@ class signUpVC: UIViewController {
     }
 
     @IBAction func signUpClicked(_ sender: UIButton) {
+
+        
         if userName.text != "" && passWord.text != "" {
             
             FIRAuth.auth()?.createUser(withEmail: userName.text! , password: passWord.text!, completion: { (user , error) in
@@ -58,10 +60,9 @@ class signUpVC: UIViewController {
                     
                     UserDefaults.standard.set(self.userName.text!, forKey: "userName")
                     UserDefaults.standard.synchronize()
-                    
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    
                     appDelegate.rememberPassword()
+
                 }
                 
             })
